@@ -1,6 +1,6 @@
 #!/bin/sh
-# Build an iocage jail under TrueNAS 12.0 using the current release of Resilio Sync
-# git clone https://github.com/kromano1/-truenas-iocage-rslsync
+# Build an iocage jail under TrueNAS 13.0 using the current release of Resilio Sync
+# git clone https://github.com/kromano1/truenas-iocage-rslsync
 
 # Check for root privileges
 if ! [ $(id -u) = 0 ]; then
