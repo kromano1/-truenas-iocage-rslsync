@@ -1,4 +1,3 @@
-# -truenas-iocage-rslsync
 # truenas-iocage-rslsync
 This is a simple script to automate the installation of Resilio Sync in a TrueNAS jail. It will create a jail, install the latest version of Resilio Sync (x64) for FreeBSD from [resilio.com](https://www.resilio.com/individuals/), and store its configuration and client backup data outside the jail, so it will not be lost in the event you need to rebuild the jail.  
 
