@@ -1,6 +1,6 @@
 #!/bin/sh
-# Build an iocage jail under TrueNAS 13.0 using the current release of Resilio Sync
-# git clone https://github.com/kromano1/truenas-iocage-rslsync
+# Build an iocage jail under FreeNAS 11.3-12.0 using the current release of Resilio Sync
+# git clone https://github.com/basilhendroff/freenas-iocage-rslsync
 
 # Check for root privileges
 if ! [ $(id -u) = 0 ]; then
@@ -38,7 +38,7 @@ fi
 INCLUDES_PATH="${SCRIPTPATH}"/includes
 
 JAILS_MOUNT=$(zfs get -H -o value mountpoint $(iocage get -p)/iocage)
-RELEASE=$(freebsd-version | cut -d - -f)"-RELEASE"
+RELEASE=$(freebsd-version | cut -d - -f -1)"-RELEASE"
 
 #####
 #
@@ -147,7 +147,7 @@ iocage fstab -a "${JAIL_NAME}" "${DATA_PATH}" /media nullfs rw 0 0
 #####
 
 FILE="resilio-sync_freebsd_x64.tar.gz"
-if ! iocage exec "${JAIL_NAME}" fetch -o /tmp https://download-cdn.resilio.com/stable/freebsd/x64/0/"${FILE}"
+if ! iocage exec "${JAIL_NAME}" fetch -o /tmp https://download-cdn.resilio.com/stable/FreeBSD-x64/"${FILE}"
 then
 	echo "Failed to download Resilio/Sync"
 	exit 1
