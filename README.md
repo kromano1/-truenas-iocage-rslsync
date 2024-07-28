@@ -2,7 +2,7 @@
 This is a simple script to automate the installation of Resilio Sync in a TrueNAS jail. It will create a jail, install the latest version of Resilio Sync (x64) for FreeBSD from [resilio.com](https://www.resilio.com/individuals/), and store its configuration and client backup data outside the jail, so it will not be lost in the event you need to rebuild the jail.  
 
 ## Status
-This script will work with TrueNAS 13.0 U6.2, and it should also work with TrueNAS CORE 12.0. Due to the EOL status of FreeBSD 11.2, it is unlikely to work reliably with earlier releases of FreeNAS.
+This script will work with FreeNAS 11.3, and it should also work with TrueNAS CORE 12.0. Due to the EOL status of FreeBSD 11.2, it is unlikely to work reliably with earlier releases of FreeNAS.
 
 ## Usage
 Users often use cloud-based services (such as Google Drive, Microsoft OneDrive, Apple iCloud and DropBox just to name a few), to do selective backups of data from their mobile and notebook devices over the internet. The appeal of Resilio Sync on FreeNAS is that it addresses many of the concerns of cloud based file synchronisation services relating to file storage limits, photo and video compression, privacy, cost and performance.
@@ -13,7 +13,7 @@ Although not required, it's recommended to create a Dataset named `apps` with a 
 
 ### Installation
 
-Download the repository to a convenient directory on your FreeNAS system by changing to that directory and running `git clone https://github.com/kromano1/-truenas-iocage-rslsync`. Then change into the new `truenas-iocage-rslsync` directory and create a file called `rslsync-config` with your favorite text editor. In its minimal form, it would look like this:
+Download the repository to a convenient directory on your FreeNAS system by changing to that directory and running `git clone https://github.com/basilhendroff/truenas-iocage-rslsync`. Then change into the new `truenas-iocage-rslsync` directory and create a file called `rslsync-config` with your favorite text editor. In its minimal form, it would look like this:
 
 ```
 JAIL_IP="10.1.1.3"
