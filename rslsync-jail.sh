@@ -1,11 +1,11 @@
 #!/bin/sh
-# Build an iocage jail under TrueNAS Core 13.0-U6.2 using the current release of Resilio Sync
+# Enhanced debugging script
 
-# Check for root privileges
-if ! [ $(id -u) = 0 ]; then
-   echo "This script must be run with root privileges"
-   exit 1
-fi
+# Add logging
+LOGFILE="/tmp/rslsync-jail.log"
+exec > >(tee -a "$LOGFILE") 2>&1
+
+echo "Starting script..."
 
 #####
 #
@@ -37,7 +37,7 @@ fi
 INCLUDES_PATH="${SCRIPTPATH}"/includes
 
 JAILS_MOUNT=$(zfs get -H -o value mountpoint $(iocage get -p)/iocage)
-RELEASE="13.3-RELEASE"
+RELEASE=$(freebsd-version | cut -d - -f -1)"-RELEASE"
 
 #####
 #
@@ -72,11 +72,13 @@ if [ -z "${CONFIG_PATH}" ]; then
 fi
 
 # Sanity check DATA_PATH and CONFIG_PATH -- they have to be different and can't be the same as POOL_PATH
-if [ "${CONFIG_PATH}" = "${DATA_PATH}" ]; then
+if [ "${CONFIG_PATH}" = "${DATA_PATH}" ]
+then
   echo "CONFIG_PATH and DATA_PATH must be different!"
   exit 1
 fi
-if [ "${DATA_PATH}" = "${POOL_PATH}" ] || [ "${CONFIG_PATH}" = "${POOL_PATH}" ]; then
+if [ "${DATA_PATH}" = "${POOL_PATH}" ] || [ "${CONFIG_PATH}" = "${POOL_PATH}" ]
+then
   echo "DATA_PATH and CONFIG_PATH must all be different from POOL_PATH!"
   exit 1
 fi
@@ -84,11 +86,35 @@ fi
 # Extract IP and netmask, sanity check netmask
 IP=$(echo ${JAIL_IP} | cut -f1 -d/)
 NETMASK=$(echo ${JAIL_IP} | cut -f2 -d/)
-if [ "${NETMASK}" = "${IP}" ]; then
+if [ "${NETMASK}" = "${IP}" ]
+then
   NETMASK="24"
 fi
-if [ "${NETMASK}" -lt 8 ] || [ "${NETMASK}" -gt 30 ]; then
+if [ "${NETMASK}" -lt 8 ] || [ "${NETMASK}" -gt 30 ]
+then
   NETMASK="24"
+fi
+
+#####
+#
+# Debugging Information
+#
+#####
+
+# Print current network configuration
+echo "Current network configuration:"
+ifconfig
+
+# Print current DNS configuration
+echo "Current DNS configuration:"
+cat /etc/resolv.conf
+
+# Example of a command with logging
+echo "Testing package repository access..."
+if ! iocage exec "${JAIL_NAME}" fetch -o /tmp https://pkg.freebsd.org/FreeBSD:13:amd64/latest/Latest/pkg.txz
+then
+    echo "Failed to fetch package repository"
+    exit 1
 fi
 
 #####
@@ -107,9 +133,10 @@ cat <<__EOF__ >/tmp/pkg.json
 __EOF__
 
 # Create the jail and install previously listed packages
-if ! iocage create --name "${JAIL_NAME}" -p /tmp/pkg.json -r "${RELEASE}" interfaces="${JAIL_INTERFACES}" ip4_addr="${INTERFACE}|${IP}/${NETMASK}" defaultrouter="${DEFAULT_GW_IP}" boot="on" host_hostname="${JAIL_NAME}" vnet="${VNET}"; then
-  echo "Failed to create jail"
-  exit 1
+if ! iocage create --name "${JAIL_NAME}" -p /tmp/pkg.json -r "${RELEASE}" interfaces="${JAIL_INTERFACES}" ip4_addr="${INTERFACE}|${IP}/${NETMASK}" defaultrouter="${DEFAULT_GW_IP}" boot="on" host_hostname="${JAIL_NAME}" vnet="${VNET}"
+then
+    echo "Failed to create jail"
+    exit 1
 fi
 rm /tmp/pkg.json
 
@@ -141,13 +168,15 @@ iocage fstab -a "${JAIL_NAME}" "${DATA_PATH}" /media nullfs rw 0 0
 #####
 
 FILE="resilio-sync_freebsd_x64.tar.gz"
-if ! iocage exec "${JAIL_NAME}" fetch -o /tmp https://download-cdn.resilio.com/stable/freebsd/x64/0/"${FILE}"; then
-  echo "Failed to download Resilio/Sync"
-  exit 1
+if ! iocage exec "${JAIL_NAME}" fetch -o /tmp https://download-cdn.resilio.com/stable/FreeBSD-x64/"${FILE}"
+then
+    echo "Failed to download Resilio/Sync"
+    exit 1
 fi
-if ! iocage exec "${JAIL_NAME}" tar xzf /tmp/"${FILE}" -C /usr/local/bin/; then
-  echo "Failed to extract Resilio/Sync"
-  exit 1
+if ! iocage exec "${JAIL_NAME}" tar xzf /tmp/"${FILE}" -C /usr/local/bin/
+then
+    echo "Failed to extract Resilio/Sync"
+    exit 1
 fi
 iocage exec "${JAIL_NAME}" rm /tmp/"${FILE}"
 
@@ -163,3 +192,5 @@ iocage restart "${JAIL_NAME}"
 # Don't need /mnt/includes any more, so unmount it
 iocage fstab -r "${JAIL_NAME}" "${INCLUDES_PATH}" /tmp/includes nullfs rw 0 0
 iocage exec "${JAIL_NAME}" rmdir /tmp/includes
+
+echo "Script completed."
