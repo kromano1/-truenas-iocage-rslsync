@@ -37,7 +37,7 @@ fi
 INCLUDES_PATH="${SCRIPTPATH}"/includes
 
 JAILS_MOUNT=$(zfs get -H -o value mountpoint $(iocage get -p)/iocage)
-RELEASE="13.1-RELEASE"
+RELEASE="13.3-RELEASE"
 
 #####
 #
