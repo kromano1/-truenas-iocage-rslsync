@@ -1,2 +1,6 @@
 JAIL_IP="192.168.10.21/24"
 DEFAULT_GW_IP="192.168.10.1"
+POOL_PATH="/mnt/tank"
+CONFIG_PATH="/mnt/tank/apps/rslsync/config"
+DATA_PATH="/mnt/tank/apps/rslsync/data"
+JAIL_INTERFACES="vnet0:bridge0"
