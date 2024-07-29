@@ -13,6 +13,9 @@ Although not required, it's recommended to create a Dataset named `apps` with a 
 
 ### Installation
 
+--YOU MUST UPDATE THE IOCAGE MANUALLY--
+Open shell and run iocage fetch, 0 for 13.3-release
+
 Download the repository to a convenient directory on your FreeNAS system by changing to that directory and running `git clone https://github.com/kromano1/truenas-iocage-rslsync`. Then change into the new `truenas-iocage-rslsync` directory and create a file called `rslsync-config` with your favorite text editor. In its minimal form, it would look like this:
 
 ```
