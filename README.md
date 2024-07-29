@@ -19,8 +19,8 @@ Open shell and run iocage fetch, 0 for 13.3-release
 Download the repository to a convenient directory on your FreeNAS system by changing to that directory and running `git clone https://github.com/kromano1/truenas-iocage-rslsync`. Then change into the new `truenas-iocage-rslsync` directory and create a file called `rslsync-config` with your favorite text editor. In its minimal form, it would look like this:
 
 ```
-JAIL_IP="10.1.1.3"
-DEFAULT_GW_IP="10.1.1.1"
+JAIL_IP="192.168.10.21"
+DEFAULT_GW_IP="192.168.10.1"
 ```
 
 Many of the options are self-explanatory, and all should be adjusted to suit your needs, but only a few are mandatory. The mandatory options are:
@@ -43,7 +43,7 @@ Once you've downloaded the script and prepared the configuration file, run this 
 
 ### Test
 
-To test your installation, enter your Resilio Sync jail IP address and port 8888 e.g. `10.1.1.3:8888` in a browser. If the installation was successful, you should see a Resilio Sync configuration screen.
+To test your installation, enter your Resilio Sync jail IP address and port 8888 e.g. `192.168.10.21:8888` in a browser. If the installation was successful, you should see a Resilio Sync configuration screen.
 
 ### Initial Configuration
 
