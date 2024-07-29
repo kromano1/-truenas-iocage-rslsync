@@ -108,14 +108,6 @@ LOGFILE="/tmp/rslsync-jail.log"
   echo "Current DNS configuration:"
   cat /etc/resolv.conf
 
-  # Example of a command with logging
-  echo "Testing package repository access..."
-  if ! iocage exec "${JAIL_NAME}" fetch -o /tmp https://pkg.freebsd.org/FreeBSD:13:amd64/latest/Latest/pkg.txz
-  then
-      echo "Failed to fetch package repository"
-      exit 1
-  fi
-
   #####
   #
   # Jail Creation
