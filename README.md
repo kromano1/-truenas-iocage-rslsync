@@ -2,7 +2,7 @@
 This is a simple script to automate the installation of Resilio Sync in a TrueNAS jail. It will create a jail, install the latest version of Resilio Sync (x64) for FreeBSD from [resilio.com](https://www.resilio.com/individuals/), and store its configuration and client backup data outside the jail, so it will not be lost in the event you need to rebuild the jail.  
 
 ## Status
-This script will work with FreeNAS 11.3, and it should also work with TrueNAS CORE 12.0. Due to the EOL status of FreeBSD 11.2, it is unlikely to work reliably with earlier releases of FreeNAS.
+This script will work with TrueNAS CORE 13.0. Due to the EOL status of FreeBSD 11.2, it is unlikely to work reliably with earlier releases of FreeNAS.
 
 ## Usage
 Users often use cloud-based services (such as Google Drive, Microsoft OneDrive, Apple iCloud and DropBox just to name a few), to do selective backups of data from their mobile and notebook devices over the internet. The appeal of Resilio Sync on FreeNAS is that it addresses many of the concerns of cloud based file synchronisation services relating to file storage limits, photo and video compression, privacy, cost and performance.
